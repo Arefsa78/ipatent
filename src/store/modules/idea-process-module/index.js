@@ -29,7 +29,7 @@ const actions = {
                     content: "این یک ایده خیلی جالب هست که قراره کل دنیا رو پشم ریزون کنه. حتی ممکنه چندتا کشته بدیم از شدت تعجب، خیلی نمیخوام راجب بهش صحبت کنم تا شما رو به خطر نندازم، فعلا."
                 }
             },
-            "level": 2
+            level: 2
         }
         // let response = await axios.get(GET_PRESENTATION_TEAM);
         context.commit('setProcess', process);
