@@ -7,23 +7,24 @@
             <v-expansion-panel
                 v-for="(level,key) in process.levelStats"
                 :key="key"
+                class=""
             >
               <v-expansion-panel-header
-                  class="font-weight-bold white--text"
-                  color="primary"
+                  class="font-weight-bold white--text py-5"
+                  :color="set_color(key)"
                   :disable-icon-rotate="key <= process.level"
               >
                 {{ levelTitles[key] }}
-                <template v-if="key < process.level" v-slot:actions>
-                  <v-icon color="accent">
-                    check
-                  </v-icon>
-                </template>
-                <template v-else-if="key == process.level" v-slot:actions>
-                  <v-icon color="accent">
-                    error
-                  </v-icon>
-                </template>
+                <!--                <template v-if="key < process.level" v-slot:actions>-->
+                <!--                  <v-icon large color="success">-->
+                <!--                    check-->
+                <!--                  </v-icon>-->
+                <!--                </template>-->
+                <!--                <template v-else-if="key == process.level" v-slot:actions>-->
+                <!--                  <v-icon large color="success">-->
+                <!--                    error-->
+                <!--                  </v-icon>-->
+                <!--                </template>-->
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <lvl1 :level="level" :active="process.level != key"/>
@@ -49,6 +50,13 @@ export default {
 
   methods: {
     ...mapActions('ideaProcessModule', ['getProcessUser']),
+    set_color(key) {
+      if (key < this.process.level)
+        return 'success'
+      if(key > this.process.level)
+        return 'error'
+      return 'primary'
+    }
   },
 
   data: () => ({

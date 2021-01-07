@@ -20,7 +20,7 @@
 
     <v-main>
       <vue-page-transition name="overlay-up" class="fill-height">
-        <sign-up/>
+        <idea-process/>
       </vue-page-transition>
     </v-main>
   </v-app>
@@ -28,21 +28,22 @@
 
 <script>
 
-import IdeaProcess from "@/views/idea-process";
 import MainDrawer from "@/components/main-drawer";
-import New from "@/views/new";
-import NewIdea from "@/views/new-idea";
-import SignUp from "@/views/sign-up";
+// import New from "@/views/new";
+// import NewIdea from "@/views/new-idea";
+// import SignUp from "@/views/sign-up";
+import IdeaProcess from "@/views/idea-process";
 
 export default {
   name: 'App',
 
   components: {
-    SignUp,
-    NewIdea,
-    New,
+    IdeaProcess,
+    // SignUp,
+    // NewIdea,
+    // New,
     MainDrawer,
-    IdeaProcess
+    // IdeaProcess
   },
 
   data: () => ({
