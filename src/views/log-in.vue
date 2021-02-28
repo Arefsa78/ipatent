@@ -5,21 +5,16 @@
       <v-col cols="6">
         <v-card>
           <v-card-title>
-            ثبت نام
+            ورود
           </v-card-title>
           <v-divider/>
           <v-card-text>
             <v-form
-                @submit.prevent="signupUser"
+                @submit.prevent="loginUser"
             >
               <v-text-field
-                  label="نام و نام خانوادگی"
+                  label="شماره موبایل"
                   v-model="user.fullname"
-                  outlined
-              />
-              <v-text-field
-                  label="شماره تماس"
-                  v-model="user.phoneNum"
                   outlined
               />
               <v-text-field
@@ -29,7 +24,7 @@
                   outlined
               />
               <v-btn type="submit" color="success">
-                ثبت نام
+                ورود
               </v-btn>
             </v-form>
           </v-card-text>
@@ -44,10 +39,9 @@
 import {mapActions} from "vuex";
 
 export default {
-  name: "sign-up",
+  name: "log-in",
   data: () => ({
     user:{
-      fullname: "",
       phoneNum: "",
       password: "",
     },

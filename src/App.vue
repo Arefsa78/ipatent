@@ -11,8 +11,13 @@
         color="primary"
     >
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+      <div class="d-flex white--text">
+        <div class="bar-item" v-for="(item, i) in app_bar.items" :key="i">
+          {{ item }}
+        </div>
+      </div>
       <v-spacer></v-spacer>
-      <div class="d-flex align-center font-weight-bold white--text" style="font-size: 25px" >
+      <div class="d-flex align-center font-weight-bold white--text" style="font-size: 25px">
         IPatent
       </div>
 
@@ -20,7 +25,7 @@
 
     <v-main>
       <vue-page-transition name="overlay-up" class="fill-height">
-        <profile/>
+        <router-view class="fill-height"></router-view>
       </vue-page-transition>
     </v-main>
   </v-app>
@@ -29,18 +34,27 @@
 <script>
 
 import MainDrawer from "@/components/main-drawer";
-import Profile from "@/views/profile";
 
 export default {
   name: 'App',
 
   components: {
-    Profile,
     MainDrawer,
   },
 
   data: () => ({
-    responsive: false
+    responsive: false,
+    app_bar: {
+      items: [
+        'خانه',
+        'حامیان',
+        'بلاگ',
+        'فرآیندها',
+        'ارتباط با ما',
+        'آیین نامه',
+        'ثبت نام'
+      ]
+    }
   }),
 
   mounted() {
@@ -56,6 +70,11 @@ export default {
 };
 </script>
 <style lang="scss">
+.bar-item {
+  padding: 0 10px;
+  cursor: pointer;
+}
+
 @font-face {
   font-family: Shabnam;
   src: url('./fonts/Shabnam.eot');

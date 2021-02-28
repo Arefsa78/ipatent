@@ -3,14 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 8888",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+    "vue-axios": "^3.2.4",
     "vue-page-transition": "^0.2.2",
+    "vue-router": "^3.5.1",
     "vuetify": "^2.2.11",
     "vuex": "^3.6.0"
   },
