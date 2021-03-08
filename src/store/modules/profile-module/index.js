@@ -1,155 +1,63 @@
+import {API} from "@/api/api";
+import store from '../../../store'
+import axios from "axios";
+
 const state = {
     user: {},
+    ideas: [],
+    patents: []
 };
 
 const mutations = {
     setUser(state, item) {
         state.user = item;
+    },
+    setIdea(state, item) {
+        state.ideas = item;
+    },
+    setPatent(state, item) {
+        state.patents = item;
     }
 };
 
 const actions = {
-    getUser(context,) {
-        let user = {
-            ideas: [
-                {
-                    name: "اختراع جدید",
-                    date: "1399/9/9",
-                    step: 7,
-                    levelStats: [
-                        {
-                            name: "ارزیابی",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "proposal",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "ارزیابی تکمیلی",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "آزمایش",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "مقاله نویسی",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "آزمایش",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "مقاله نویسی",
-                            time: "1398/2/3"
-                        }
-                    ]
-                },
-                {
-                    name: "ایده‌ی اول",
-                    date: "1399/9/9",
-                    step: 5,
-                    levelStats: [
-                        {
-                            name: "ارزیابی",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "proposal",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "ارزیابی تکمیلی",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "آزمایش",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "مقاله نویسی",
-                            time: "1398/2/3"
-                        }
-                    ]
-                },
-                // {
-                //     name: "ایده‌ی دوم",
-                //     date: "1399/9/9",
-                //     step: 3,
-                //     levelStats: [
-                //         {
-                //             name: "ارزیابی",
-                //             time: "1398/2/3"
-                //         },
-                //         {
-                //             name: "proposal",
-                //             time: "1398/2/3"
-                //         },
-                //         {
-                //             name: "ارزیابی تکمیلی",
-                //             time: "1398/2/3"
-                //         },
-                //     ]
-                //
-                // },
-                // {
-                //     name: "ایده‌ی اول",
-                //     date: "1399/9/9",
-                //     step: 5,
-                //     levelStats: [
-                //         {
-                //             name: "ارزیابی",
-                //             time: "1398/2/3"
-                //         },
-                //         {
-                //             name: "proposal",
-                //             time: "1398/2/3"
-                //         },
-                //         {
-                //             name: "ارزیابی تکمیلی",
-                //             time: "1398/2/3"
-                //         },
-                //         {
-                //             name: "آزمایش",
-                //             time: "1398/2/3"
-                //         },
-                //         {
-                //             name: "مقاله نویسی",
-                //             time: "1398/2/3"
-                //         }
-                //     ]
-                // },
-                {
-                    name: "ایده‌ی دوم",
-                    date: "1399/9/9",
-                    step: 3,
-                    levelStats: [
-                        {
-                            name: "ارزیابی",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "proposal",
-                            time: "1398/2/3"
-                        },
-                        {
-                            name: "ارزیابی تکمیلی",
-                            time: "1398/2/3"
-                        },
-                    ]
-
-                },
-            ]
+    async getUser(context,) {
+        console.log(axios.defaults.headers.common)
+        const user_id = store.getters['authModule/userId']
+        try {
+            let response = await axios.get(`${API.USER}/${user_id}`);
+            console.log(response)
+            context.commit('setUser', response.data);
+        } catch (e) {
+            if (e.response.status == 404) {
+                context.commit('setUser', {})
+            }
         }
-        // let response = await axios.get(GET_PRESENTATION_TEAM);
-        context.commit('setUser', user);
+        try {
+            let response = await axios.get(`${API.USER_IDEAS}/${user_id}?type=owner`);
+            console.log(response)
+            context.commit('setIdea', response.data);
+        } catch (e) {
+            if (e.response.status == 404) {
+                context.commit('setIdea', [])
+            }
+        }
+        try {
+            let response = await axios.get(`${API.USER_PATENTS}/${user_id}?type=owner`);
+            console.log(response)
+            context.commit('setPatent', response.data);
+        } catch (e) {
+            if (e.response.status == 404) {
+                context.commit('setPatent', [])
+            }
+        }
     },
 };
 
 const getters = {
     user: (state) => state.user,
+    ideas: (state) => state.ideas,
+    patents: (state) => state.patents,
 };
 
 

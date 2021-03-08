@@ -1,10 +1,14 @@
 const API_PERFIX = "http://localhost/energy_project/src/Controller/mainController.php/"
 
 export const API = {
-	LOGIN: API_PERFIX + "",
+	USER: API_PERFIX + 'User',
+	LOGIN: API_PERFIX + "auth",
 	SIGNUP: API_PERFIX + "User",
+	REFRESH: API_PERFIX + "refresh",
+	USER_IDEAS: API_PERFIX + "Idea",
+	USER_PATENTS: API_PERFIX + "Patent",
 	COMPELETE_USER_DATA: API_PERFIX + "",
-	SUBMIT_IDEA: API_PERFIX + "",
+	SUBMIT_IDEA: API_PERFIX + "Idea",
 	SUBMIT_PATENT: API_PERFIX + "",
 	SUBMIT_IDEA_FORM: API_PERFIX + "", // by form id
 	SUBMIT_PATENT_FORM: API_PERFIX + "", // by form id

@@ -61,6 +61,7 @@ export default {
         "password": this.user.password,
       }
       this.signup(data);
+      this.$router.replace({name: 'Login'})
     }
   }
 }

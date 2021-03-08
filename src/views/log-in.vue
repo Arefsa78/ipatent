@@ -14,7 +14,7 @@
             >
               <v-text-field
                   label="شماره موبایل"
-                  v-model="user.fullname"
+                  v-model="user.phoneNum"
                   outlined
               />
               <v-text-field
@@ -47,14 +47,14 @@ export default {
     },
   }),
   methods:{
-    ...mapActions("authModule", ['signup']),
-    signupUser(){
+    ...mapActions("authModule", ['login']),
+    loginUser(){
       const data = {
-        "fullname": this.user.fullname,
         "phoneNum": this.user.phoneNum,
         "password": this.user.password,
       }
-      this.signup(data);
+      this.login(data);
+      this.$router.replace({name: 'Profile'})
     }
   }
 }

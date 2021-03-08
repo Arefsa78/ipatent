@@ -12,12 +12,14 @@
               <v-row>
                 <v-col cols="6">
                   <v-text-field
+                      v-model="idea.idea_name"
                       outlined
                       label="موضوع ایده"
                   />
                 </v-col>
                 <v-col cols="6">
                   <v-text-field
+                      v-model="type"
                       outlined
                       label="زمینه‌ی ایده"
                   />
@@ -26,6 +28,7 @@
               <v-row>
                 <v-col cols="12">
                   <v-textarea
+                      v-model="idea.description"
                       outlined
                       label="توضیحات کامل"
                   />
@@ -34,7 +37,7 @@
               <v-row>
                 <v-spacer/>
                 <v-col cols="3">
-                  <v-btn block color="success">ثبت ایده</v-btn>
+                  <v-btn block color="success" @click="submit_idea">ثبت ایده</v-btn>
                 </v-col>
               </v-row>
             </v-form>
@@ -46,8 +49,27 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
-  name: "new-idea"
+  name: "new-idea",
+  data: () => ({
+    idea: {
+      idea_name: "",
+      description: "",
+      extraResources: "XX RESOURCE"
+    },
+    type: ""
+  }),
+  methods: {
+    ...mapActions("ideaPatentModule", ['add_idea']),
+    async submit_idea() {
+      const res = await this.add_idea(this.idea)
+      if (res === "error")
+        return;
+      await this.$router.replace({name: "Profile"})
+    }
+  }
 }
 </script>
 

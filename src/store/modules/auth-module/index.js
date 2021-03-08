@@ -1,5 +1,7 @@
 import axios from 'axios';
 import {API} from "@/api/api";
+import VueJwtDecode from 'vue-jwt-decode'
+
 
 const state = {
     token: localStorage.getItem("ipatentToken") || '',
@@ -8,7 +10,7 @@ const state = {
 const mutations = {
     setToken(state, payload) {
         state.token = payload;
-    }
+    },
 };
 
 const actions = {
@@ -16,15 +18,15 @@ const actions = {
         try {
             let response = await axios.post(API.LOGIN, payload);
             console.log("TOKEN: ")
-            console.log(response.data.token)
-            context.commit("setToken", "Token " + response.data.token);
+            console.log(response.data.accessToken)
+            context.commit("setToken", response.data.accessToken);
             localStorage.setItem("ipatentToken", state.token);
-            axios.defaults.headers.common['Authorization'] = state.token;
+            axios.defaults.headers.common['Authorization'] = "Bearer " + state.token;
         } catch (e) {
             console.log(e)
             if (e.response.status === 400) {
                 throw Error("نام کاربری یا رمز عبور اشتباه است!");
-            } else if (e.response.status === 401 ){
+            } else if (e.response.status === 401) {
                 throw Error('اکانت شما هنوز تایید نشده است!');
             } else if (e.response.status >= 500) {
                 throw Error("خطا در برقزاری ارتباط با سرور!");
@@ -38,15 +40,23 @@ const actions = {
             // eslint-disable-next-line no-unused-vars
             let response = await axios.post(API.SIGNUP, payload);
             console.log("DONE")
-            // await this.$router.replace({name: 'Login'})
+            await this.$router.replace({name: 'Login'})
         } catch (e) {
             console.log("ERRRRRRRRRRR");
             console.log(e);
         }
     },
+    async refresh(context,) {
+        let response = await axios.get(API.REFRESH);
+        console.log("TOKEN(REFRESH): ")
+        console.log(response.data.accessToken)
+        context.commit("setToken", "Bearer " + response.data.accessToken);
+        localStorage.setItem("ipatentToken", state.token);
+        axios.defaults.headers.common['Authorization'] = state.token;
+    },
     logout(context) {
         axios.defaults.headers.common['Authorization'] = '';
-        localStorage.removeItem("ShiveToken");
+        localStorage.removeItem("ipatentToken");
         context.commit('setToken', "");
     },
 };
@@ -54,6 +64,9 @@ const actions = {
 const getters = {
     isAuthenticated: (state) => {
         return state.token !== ""
+    },
+    userId: (state) => {
+        return VueJwtDecode.decode(state.token).data.user_id;
     }
 };
 

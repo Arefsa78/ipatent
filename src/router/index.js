@@ -26,15 +26,15 @@ const routes = [
             action: 'read'
         }
     },
-    // {
-    //     path: '/login',
-    //     name: 'Login',
-    //     component: () => import("@/views/log-in"),
-    //     meta: {
-    //         action: "access",
-    //         resource: 'authenticate'
-    //     }
-    // },
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import("@/views/log-in"),
+        meta: {
+            action: "access",
+            resource: 'authenticate'
+        }
+    },
     {
         path: '/signup',
         name: 'Signup',
@@ -44,6 +44,24 @@ const routes = [
             resource: 'authenticate'
         }
     },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: () => import("@/views/profile"),
+        meta: {
+            action: "access",
+            resource: 'authenticate'
+        }
+    },
+    {
+        path: '/new-idea',
+        name: 'NewIdea',
+        component: () => import("@/views/new-idea"),
+        meta: {
+            action: "access",
+            resource: 'authenticate'
+        }
+    }
     // {
     //     path: '/rules',
     //     name: 'Rules',
