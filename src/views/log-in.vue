@@ -8,24 +8,47 @@
             ورود
           </v-card-title>
           <v-divider/>
-          <v-card-text>
+          <v-card-text class="black--text">
             <v-form
                 @submit.prevent="loginUser"
             >
-              <v-text-field
-                  label="شماره موبایل"
-                  v-model="user.phoneNum"
-                  outlined
-              />
-              <v-text-field
-                  label="رمز عبور"
-                  v-model="user.password"
-                  type="password"
-                  outlined
-              />
-              <v-btn type="submit" color="success">
-                ورود
-              </v-btn>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                        label="شماره موبایل"
+                        v-model="user.phoneNum"
+                        outlined
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                        label="رمز عبور"
+                        v-model="user.password"
+                        type="password"
+                        outlined
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-spacer/>
+                  <v-col cols="3">
+                    <v-btn type="submit" color="success" width="100%">
+                      ورود
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-divider class="my-5"/>
+                <v-row>
+                  <v-col cols="12" class="blue--text" style="cursor: pointer">
+                      <div @click="$router.push({name: 'Signup'})">
+                        اکانت ندارید؟ همین حالا ثبت نام کنید!
+                      </div>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-form>
           </v-card-text>
         </v-card>
@@ -41,19 +64,19 @@ import {mapActions} from "vuex";
 export default {
   name: "log-in",
   data: () => ({
-    user:{
+    user: {
       phoneNum: "",
       password: "",
     },
   }),
-  methods:{
+  methods: {
     ...mapActions("authModule", ['login']),
-    loginUser(){
+    async loginUser() {
       const data = {
         "phoneNum": this.user.phoneNum,
         "password": this.user.password,
       }
-      this.login(data);
+      await this.login(data);
       this.$router.replace({name: 'Profile'})
     }
   }

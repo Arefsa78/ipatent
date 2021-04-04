@@ -61,15 +61,15 @@ const routes = [
             action: "access",
             resource: 'authenticate'
         }
-    }
-    // {
-    //     path: '/rules',
-    //     name: 'Rules',
-    //     component: () => import("@/views/rules"),
-    //     meta: {
-    //         action: "read",
-    //     }
-    // },
+    },
+    {
+        path: '/rules',
+        name: 'Rules',
+        component: () => import("@/views/rules"),
+        meta: {
+            action: "read",
+        }
+    },
     // {
     //     path: '*',
     //     name: 'Error404',

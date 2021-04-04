@@ -57,7 +57,7 @@ export default {
     idea: {
       idea_name: "",
       description: "",
-      extraResources: "XX RESOURCE"
+      extraResources: ""
     },
     type: ""
   }),

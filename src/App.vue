@@ -3,21 +3,47 @@
       class="faLang text--primary"
       v-bind:style="{ background: $vuetify.theme.themes.light.background}"
   >
-    <main-drawer ref="drawer" :responsive="responsive"/>
+    <main-drawer v-if="isAuthenticated || responsive" ref="drawer" :responsive="responsive"/>
 
     <v-app-bar
         app
         clipped-right
         color="primary"
+        dense
+        height="60"
+        style="user-select: none"
     >
-      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-      <div class="d-flex white--text">
-        <div class="bar-item" v-for="(item, i) in app_bar.items" :key="i">
-          {{ item }}
+      <v-app-bar-nav-icon class="white--text" style="margin-right: 16px" v-if="isAuthenticated || responsive"
+                          @click="toggleDrawer"></v-app-bar-nav-icon>
+
+      <div class="d-flex white--text" style="height: 100%">
+        <div
+            v-if="!isAuthenticated"
+            class="bar-item d-flex justify-center align-center"
+            @click="goto('Login')"
+            v-bind:style="$route.name === 'Login' ? {backgroundColor: '#47988e'}:{}"
+        >
+          <div>
+            ورود
+          </div>
+        </div>
+        <div class="d-flex white--text" style="height: 100%"
+             v-if="!responsive">
+          <div
+              class="bar-item d-flex justify-center align-center"
+              v-for="(item, i) in app_bar.items"
+              :key="i"
+              @click="goto(item.to)"
+              v-bind:style="$route.name === item.to ? {backgroundColor: '#47988e'}:{}"
+          >
+            <div>
+              {{ item.text }}
+            </div>
+          </div>
         </div>
       </div>
       <v-spacer></v-spacer>
-      <div class="d-flex align-center font-weight-bold white--text" style="font-size: 25px">
+      <div class="d-flex align-center font-weight-bold white--text" style="margin-left: 16px;font-size: 25px">
         IPatent
       </div>
 
@@ -34,6 +60,7 @@
 <script>
 
 import MainDrawer from "@/components/main-drawer";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'App',
@@ -46,33 +73,59 @@ export default {
     responsive: false,
     app_bar: {
       items: [
-        'خانه',
-        'حامیان',
-        'بلاگ',
-        'فرآیندها',
-        'ارتباط با ما',
-        'آیین نامه',
-        'ثبت نام'
+        {
+          text: 'خانه',
+          to: "HomePage"
+        },
+        {
+          text: 'حامیان',
+          to: "Sponsors"
+        },
+        {
+          text: 'بلاگ',
+          to: "Blog"
+        },
+        {
+          text: 'فرآیندها',
+          to: "Process"
+        },
+        {
+          text: 'ارتباط با ما',
+          to: "Contact Us"
+        },
+        {
+          text: 'آیین نامه',
+          to: "Rules"
+        },
       ]
     }
   }),
-
+  computed: {
+    ...mapGetters('authModule', ['isAuthenticated'])
+  },
   mounted() {
-    this.responsive = window.innerWidth < 960;
+    this.responsive = window.innerWidth < 700;
     this.$refs.drawer.drawer = false;
   },
 
   methods: {
     toggleDrawer() {
       this.$refs.drawer.drawer = !this.$refs.drawer.drawer;
+    },
+    goto(route_name) {
+      this.$router.push({name: route_name})
     }
   }
 };
 </script>
 <style lang="scss">
 .bar-item {
-  padding: 0 10px;
+  padding: 0 20px;
   cursor: pointer;
+  transition: 0.5s;
+}
+.bar-item:hover {
+  background-color: #47988e
 }
 
 @font-face {
@@ -201,6 +254,9 @@ export default {
       font-family: $body-font-family;
     }
 
+  }
+  .v-toolbar__content{
+    padding: 0;
   }
 }
 </style>

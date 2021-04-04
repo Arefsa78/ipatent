@@ -52,6 +52,15 @@ const actions = {
             }
         }
     },
+    async editUser(context, preload) {
+        try {
+            await axios.put(`${API.USER}/`, preload);
+            context.commit('getUser');
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
 };
 
 const getters = {

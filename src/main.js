@@ -5,6 +5,8 @@ import store from './store'
 import router from "@/router";
 import axios from "axios";
 
+// "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security  --user-data-dir=~/chromeTemp
+
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 const token = localStorage.getItem('ipatentToken');
