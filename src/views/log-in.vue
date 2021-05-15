@@ -33,7 +33,9 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-spacer/>
+                  <v-col cols="9" class="error--text">
+                    {{ error }}
+                  </v-col>
                   <v-col cols="3">
                     <v-btn type="submit" color="success" width="100%">
                       ورود
@@ -43,9 +45,9 @@
                 <v-divider class="my-5"/>
                 <v-row>
                   <v-col cols="12" class="blue--text" style="cursor: pointer">
-                      <div @click="$router.push({name: 'Signup'})">
-                        اکانت ندارید؟ همین حالا ثبت نام کنید!
-                      </div>
+                    <div @click="$router.push({name: 'Signup'})">
+                      اکانت ندارید؟ همین حالا ثبت نام کنید!
+                    </div>
                   </v-col>
                 </v-row>
               </v-container>
@@ -68,6 +70,7 @@ export default {
       phoneNum: "",
       password: "",
     },
+    error: "",
   }),
   methods: {
     ...mapActions("authModule", ['login']),
@@ -76,8 +79,12 @@ export default {
         "phoneNum": this.user.phoneNum,
         "password": this.user.password,
       }
-      await this.login(data);
-      this.$router.replace({name: 'Profile'})
+      try {
+        await this.login(data);
+        this.$router.replace({name: 'Profile'})
+      } catch (e) {
+        this.error = e;
+      }
     }
   }
 }

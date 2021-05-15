@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {API} from "@/api/api";
 import VueJwtDecode from 'vue-jwt-decode'
+import $cookie from "vue-cookie";
 
 
 const state = {
@@ -18,19 +19,19 @@ const actions = {
         try {
             let response = await axios.post(API.LOGIN, payload);
             console.log("TOKEN: ")
-            console.log(response.data.accessToken)
+            console.log(response)
             context.commit("setToken", response.data.accessToken);
+            $cookie.set("refreshToken",
+                response.data.refreshToken,
+                60 * 60 * 24 * 7, {httpOnly: true});
             localStorage.setItem("ipatentToken", state.token);
             axios.defaults.headers.common['Authorization'] = "Bearer " + state.token;
         } catch (e) {
             console.log(e)
-            if (e.response.status === 400) {
-                throw Error("نام کاربری یا رمز عبور اشتباه است!");
-            } else if (e.response.status === 401) {
-                throw Error('اکانت شما هنوز تایید نشده است!');
-            } else if (e.response.status >= 500) {
-                throw Error("خطا در برقزاری ارتباط با سرور!");
-            }
+            if (e.response.status === 404) {
+                throw "نام کاربری یا رمز عبور اشتباه است!";
+            } else
+                throw `خطا در ورود. کد خطا: ${e.response.status}`
         }
 
     },
@@ -49,14 +50,17 @@ const actions = {
     async refresh(context,) {
         let response = await axios.get(API.REFRESH);
         console.log("TOKEN(REFRESH): ")
-        console.log(response.data.accessToken)
-        context.commit("setToken", "Bearer " + response.data.accessToken);
+        console.log(response)
+        context.commit("setToken", response.data);
         localStorage.setItem("ipatentToken", state.token);
-        axios.defaults.headers.common['Authorization'] = state.token;
+        axios.defaults.headers.common['Authorization'] = "Bearer " + state.token;
+        console.log("C")
+        return state.token;
     },
     logout(context) {
         axios.defaults.headers.common['Authorization'] = '';
         localStorage.removeItem("ipatentToken");
+        $cookie.delete("refreshToken")
         context.commit('setToken', "");
     },
 };

@@ -1,21 +1,34 @@
-import axios from "axios";
-import store from '../store/index';
+import axios from 'axios';
+import {Promise} from "es6-promise";
+import {router} from '../app';
+import {store} from "vuex"
 
-const jwtInterceptor = axios.create({});
+export default () => {
+    console.log("KIIIIIIIIIIIIIIIIIIIIIIR");
 
-jwtInterceptor.interceptors.response.use(
-    (response) => {
+    axios.interceptors.response.use((response) => {
+        // Return a successful response back to the calling service
         return response;
-    },
-    async (error) => {
-        console.log("YO")
+    }, async (error) => {
+        // Return any error which is not due to authentication back to the calling service
+        console.log("KIIIIIIIIIIIIIIIIIIIIIIR");
+        console.log(error);
         if (error.response.data === 'invalid token!') {
             console.log("YOYO")
             await store.dispatch("authModule/refresh")
-        } else {
-            return Promise.reject(error);
         }
-    }
-);
 
-export default jwtInterceptor;
+        // Logout user if token refresh didn't work or user is disabled
+        if (error.response.data === "expired token!") {
+
+            await store.dispatch("authModule/logout")
+            router.replace({name: 'HomePage'});
+
+            return new Promise((resolve, reject) => {
+                reject(error);
+            });
+        }
+
+        return Promise.reject(error);
+    });
+}

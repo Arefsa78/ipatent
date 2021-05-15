@@ -26,15 +26,18 @@ const actions = {
         const user_id = store.getters['authModule/userId']
         try {
             let response = await axios.get(`${API.USER}/${user_id}`);
+            console.log("A")
             console.log(response)
             context.commit('setUser', response.data);
         } catch (e) {
+            console.log("B")
             if (e.response.status == 404) {
                 context.commit('setUser', {})
             }
         }
         try {
             let response = await axios.get(`${API.USER_IDEAS}/${user_id}?type=owner`);
+            console.log("AA")
             console.log(response)
             context.commit('setIdea', response.data);
         } catch (e) {
@@ -44,6 +47,7 @@ const actions = {
         }
         try {
             let response = await axios.get(`${API.USER_PATENTS}/${user_id}?type=owner`);
+            console.log("AAA")
             console.log(response)
             context.commit('setPatent', response.data);
         } catch (e) {
